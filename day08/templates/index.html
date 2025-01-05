@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .new-game {
+            background-color: #007BFF;
+            margin-top: 20px;
+        }
+        .new-game:hover {
+            background-color: #0056b3;
+        }
+        .history {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .history h3 {
+            margin-bottom: 10px;
+        }
+        .history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .history li {
+            background: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Number Guessing Game</h1>
+        <p>{{ message }}</p>
+        {% if not game_over %}
+        <form method="post" action="/guess">
+            <input type="text" name="guess" placeholder="Enter your guess (1-20, 'x', 'n', 's')" required>
+            <button type="submit">Submit</button>
+        </form>
+        {% else %}
+        <form method="get" action="/new_game">
+            <button type="submit" class="new-game">Start a New Game</button>
+        </form>
+        {% endif %}
+        <div class="history">
+            <h3>Guess History:</h3>
+            <ul>
+                {% for entry in guess_history %}
+                    <li>
+                        {% if entry.feedback %}
+                            Guess: {{ entry.guessed_number }} - {{ entry.feedback }}
+                        {% else %}
+                            Successful Guess: {{ entry.guessed_number }} in {{ entry.tries }} tries.
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
